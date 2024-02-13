@@ -9,6 +9,8 @@ from client import QueueClient
 TEST_SIZE = 1000 * 1000
 KEY_SIZE = 8
 SUBSCRIER_COUNT = 4
+server_url = "http://87.247.170.145:8000"
+client = QueueClient(server_url, {'Content-Type': 'application/json'})
 
 
 def to_infinity():
@@ -20,11 +22,11 @@ def to_infinity():
 
 def push_key(key: str):
     for i in to_infinity():
-        QueueClient.push(key, f"{i}".encode("utf-8"))
+        client.push(key, f"{i}".encode("utf-8"))
         print(key, f"{i}".encode("utf-8"))
 
 
-QueueClient.subscribe(lambda key, val: ...)
+client.subscribe(lambda key, val: ...)
 
 for i in to_infinity():
     p = multiprocessing.Process(target=push_key, args=(i,))

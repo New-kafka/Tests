@@ -10,6 +10,9 @@ from client import QueueClient
 TEST_SIZE = 1000 * 1000
 KEY_SIZE = 8
 SUBSCRIER_COUNT = 4
+server_url = "http://87.247.170.145:8000"
+client = QueueClient(server_url, {'Content-Type': 'application/json'})
+
 
 key_seq = [random.choice(range(KEY_SIZE)) for _ in range(TEST_SIZE)]
 
@@ -29,9 +32,9 @@ def validate_pull(key: str, val: bytes):
 
 
 for _ in range(SUBSCRIER_COUNT):
-    QueueClient.subscribe(validate_pull)
+    client.subscribe(validate_pull)
 
 for i in range(TEST_SIZE):
-    QueueClient.push(f"{key_seq[i]}", f"{i}".encode(encoding="utf-8"))
+    client.push(f"{key_seq[i]}", f"{i}".encode(encoding="utf-8"))
 
 print("order test passed successfully!")
